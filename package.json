@@ -1,0 +1,36 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "API para DailyMana",
+  "main": "backend/index.js",
+  "scripts": {
+    "start": "node backend/index.js",
+    "dev": "nodemon backend/index.js",
+    "build": "ng build --prod",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve:ssr": "node dist/angular-todo/server/server.mjs"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.1",
+    "dotenv": "^16.5.0",
+    "@angular/core": "^19.2.0",
+    "@angular/common": "^19.2.0",
+    "@angular/router": "^19.2.0",
+    "rxjs": "~7.8.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "@angular/cli": "^19.2.5",
+    "typescript": "~5.7.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "author": "AdriSaurXYZ",
+  "license": "ISC"
+}
