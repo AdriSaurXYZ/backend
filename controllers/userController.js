@@ -9,10 +9,10 @@ if (!SECRET_KEY) {
 }
 
 exports.registerUser = async (req, res) => {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({ error: 'Email y contraseña son requeridos' });
+    if (!name || !email || !password) {
+        return res.status(400).json({ error: 'Nombre, email y contraseña son requeridos' });
     }
 
     try {
@@ -29,8 +29,8 @@ exports.registerUser = async (req, res) => {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             db.query(
-                'INSERT INTO users (email, password) VALUES (?, ?)',
-                [email, hashedPassword],
+                'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+                [name, email, hashedPassword],
                 (err) => {
                     if (err) {
                         console.error('Error al registrar usuario:', err);
@@ -45,6 +45,7 @@ exports.registerUser = async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
+
 
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
