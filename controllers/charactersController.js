@@ -1,11 +1,11 @@
-const { query } = require('../db');
+const db = require('../db');
 
-exports.getAllCharacters = async (req, res) => {
-    try {
-        const rows = await query('SELECT * FROM characters_hsr');
-        res.status(200).json(rows);
-    } catch (error) {
-        console.error('Error al obtener personajes:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
+exports.getAllCharacters = (req, res) => {
+    db.query('SELECT * FROM characters_hsr', (err, results) => {
+        if (err) {
+            console.error('Error al obtener personajes:', err);
+            return res.status(500).json({ error: 'Error interno del servidor' });
+        }
+        res.status(200).json(results);
+    });
 };
