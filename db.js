@@ -1,9 +1,9 @@
+require('dotenv').config(); // Asegúrate de cargar las variables del .env
 const mysql = require('mysql2');
-require('dotenv').config();
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    port: process.env.DB_PORT, // Railway requiere puerto específico
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -20,18 +20,4 @@ db.connect((err) => {
     console.log('✅ Conectado a la base de datos MySQL en Railway');
 });
 
-
-const query = (sql, params) => {
-    return new Promise((resolve, reject) => {
-        db.query(sql, params, (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
-};
-
-// Exportamos la conexión original y la función query
-module.exports = {
-    db,
-    query
-};
+module.exports = db;
