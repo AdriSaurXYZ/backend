@@ -10,6 +10,10 @@ require('./db'); // <-- Asegura que se conecte cuando arranca
 const userRoutes = require('./routes/routes');
 const taskRoutes = require('./routes/taskRoutes');
 
+const userCharactersRoutes = require('./routes/userCharactersRoutes');
+app.use('/api/user-characters', userCharactersRoutes);
+
+
 const app = express();
 
 app.use(bodyParser.json());
