@@ -9,9 +9,7 @@ require('./db'); // <-- Asegura que se conecte cuando arranca
 // Rutas
 const userRoutes = require('./routes/routes');
 const taskRoutes = require('./routes/taskRoutes');
-
 const userCharactersRoutes = require('./routes/userCharactersRoutes');
-app.use('/api/user-characters', userCharactersRoutes);
 
 
 const app = express();
@@ -29,6 +27,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/user-characters', userCharactersRoutes);
 
 // Usa el puerto definido por Railway o 3000 por defecto
 const PORT = process.env.PORT || 3000;
