@@ -1,4 +1,4 @@
-const db = require('../config/db'); // tu conexión MySQL
+const db = require('../db');
 
 // Marcar o actualizar si el usuario tiene o no un personaje
 exports.setUserCharacter = async (req, res) => {
