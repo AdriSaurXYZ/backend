@@ -28,4 +28,26 @@ router.get('/profile', (req, res) => {
     });
 });
 
+// PATCH: actualizar foto de perfil del usuario
+router.patch('/profile-photo', async (req, res) => {
+    const { email, photoUrl } = req.body;
+
+    if (!email || !photoUrl) {
+        return res.status(400).json({ message: 'Email y photoUrl son requeridos' });
+    }
+
+    try {
+        const user = await User.findOneAndUpdate({ email }, { photoUrl }, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        res.json({ message: 'Foto de perfil actualizada', user });
+    } catch (error) {
+        console.error('Error al actualizar la foto:', error);
+        res.status(500).json({ message: 'Error del servidor' });
+    }
+});
+
 module.exports = router;
