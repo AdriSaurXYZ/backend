@@ -18,9 +18,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({
     origin: '*', // O pon el dominio exacto del frontend si quieres restringirlo
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // AÑADIDO PATCH Y OPTIONS
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 
 app.get('/', (req, res) => {
     res.send('Bienvenido al servidor de DailyMana');
