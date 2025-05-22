@@ -2,7 +2,6 @@ const express = require('express');
 const { registerUser, loginUser } = require('../controllers/userController');
 const db = require('../db');  // Asegúrate de importar la conexión a la base de datos
 const router = express.Router();
-const User = require('../models/User'); // ✅ AÑADE ESTA LÍNEA
 
 // Ruta para registrar un usuario
 router.post('/register', registerUser);
