@@ -10,8 +10,15 @@ function formatLocalDateTime(date) {
 exports.createTask = (req, res) => {
     const { userId } = req.user;
     const { title, description, status, categoryName, start_date, due_date } = req.body;
+    const imageFile = req.file; // multer pone el archivo aquí si existe
 
     const taskStatus = status || 'pending'; // Valor por defecto si no se proporciona status
+
+    // Procesar URL de imagen si hay archivo
+    let imageUrl = null;
+    if (imageFile) {
+        imageUrl = `/uploads/${imageFile.filename}`;
+    }
 
     // Verificar si la categoría ya existe
     db.query(
@@ -50,8 +57,10 @@ exports.createTask = (req, res) => {
 
                 console.log('Formatted start_date:', formattedStartDate, 'Formatted due_date:', formattedDueDate);
                 db.query(
-                    'INSERT INTO tasks (user_id, title, description, status, start_date, due_date, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                    [userId, title, description, taskStatus, formattedStartDate, formattedDueDate, categoryId],
+                    `INSERT INTO tasks 
+                    (user_id, title, description, status, start_date, due_date, category_id, image_url) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [userId, title, description, taskStatus, formattedStartDate, formattedDueDate, categoryId, imageUrl],
                     (err, result) => {
                         if (err) {
                             console.error('Error al crear tarea:', err);
@@ -76,7 +85,7 @@ exports.createTask = (req, res) => {
             }
         }
     );
-}
+};
 
 exports.getTasks = (req, res) => {
     const { userId } = req.user;
@@ -208,7 +217,3 @@ exports.updateTaskCategory = (req, res) => {
         }
     );
 };
-
-
-
-

@@ -30,6 +30,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/user-characters', userCharactersRoutes);
 app.use('/api/characters', charactersRoutes);
+app.use('/uploads', express.static('uploads'));
 
 // Usa el puerto definido por Railway o 3000 por defecto
 const PORT = process.env.PORT || 3000;
