@@ -3,46 +3,48 @@ const db = require('../db');
 function formatLocalDateTime(date) {
     const d = new Date(date);
     const pad = n => n.toString().padStart(2, '0');
-
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
 
 exports.createTask = (req, res) => {
     const { userId } = req.user;
     const { title, description, status, categoryName, start_date, due_date } = req.body;
-    const imageFile = req.file; // multer pone el archivo aquí si existe
+    const imageFile = req.file;
 
-    const taskStatus = status || 'pending'; // Valor por defecto si no se proporciona status
+    console.log('📩 Body recibido:', req.body);
+    console.log('📷 Archivo recibido (req.file):', req.file);
 
-    // Procesar URL de imagen si hay archivo
+    const taskStatus = status || 'pending';
+
     let imageUrl = null;
     if (imageFile) {
-        imageUrl = imageFile.path; // ¡Cloudinary pone la URL aquí!
+        imageUrl = imageFile.path;
+        console.log('🖼️ URL de imagen asignada:', imageUrl);
     }
 
-    // Verificar si la categoría ya existe
+    console.log('🔍 Buscando categoría:', categoryName);
+
     db.query(
         'SELECT id FROM categories WHERE user_id = ? AND name = ?',
         [userId, categoryName],
         (err, results) => {
             if (err) {
-                console.error('Error al buscar categoría:', err);
+                console.error('❌ Error al buscar categoría:', err);
                 return res.status(500).send('Error al buscar categoría');
             }
 
             let categoryId;
             if (results.length > 0) {
-                // Categoría ya existe
                 categoryId = results[0].id;
                 insertTask();
             } else {
-                // Crear nueva categoría
+                console.log('📁 Categoría no encontrada, creando nueva...');
                 db.query(
                     'INSERT INTO categories (user_id, name) VALUES (?, ?)',
                     [userId, categoryName],
                     (err, result) => {
                         if (err) {
-                            console.error('Error al crear categoría:', err);
+                            console.error('❌ Error al crear categoría:', err);
                             return res.status(500).send('Error al crear categoría');
                         }
                         categoryId = result.insertId;
@@ -55,7 +57,9 @@ exports.createTask = (req, res) => {
                 const formattedStartDate = formatLocalDateTime(start_date);
                 const formattedDueDate = due_date ? formatLocalDateTime(due_date) : null;
 
-                console.log('Formatted start_date:', formattedStartDate, 'Formatted due_date:', formattedDueDate);
+                console.log('⏰ start_date:', start_date, '➡️', formattedStartDate);
+                console.log('⏰ due_date:', due_date, '➡️', formattedDueDate);
+
                 db.query(
                     `INSERT INTO tasks 
                     (user_id, title, description, status, start_date, due_date, category_id, image_url) 
@@ -63,20 +67,24 @@ exports.createTask = (req, res) => {
                     [userId, title, description, taskStatus, formattedStartDate, formattedDueDate, categoryId, imageUrl],
                     (err, result) => {
                         if (err) {
-                            console.error('Error al crear tarea:', err);
+                            console.error('❌ Error al crear tarea:', err);
                             return res.status(500).send('Error al crear tarea');
                         }
+
+                        console.log('✅ Tarea insertada, buscando para retornar...');
                         db.query(
                             `SELECT tasks.*, categories.name AS categoryName
                              FROM tasks
-                                      LEFT JOIN categories ON tasks.category_id = categories.id
+                             LEFT JOIN categories ON tasks.category_id = categories.id
                              WHERE tasks.id = ?`,
                             [result.insertId],
                             (err, taskResults) => {
                                 if (err) {
-                                    console.error('Error al obtener la tarea creada:', err);
+                                    console.error('❌ Error al obtener la tarea creada:', err);
                                     return res.status(500).send('Error al obtener la tarea creada');
                                 }
+
+                                console.log('📦 Tarea final:', taskResults[0]);
                                 res.status(201).json(taskResults[0]);
                             }
                         );
@@ -86,6 +94,7 @@ exports.createTask = (req, res) => {
         }
     );
 };
+
 
 exports.getTasks = (req, res) => {
     const { userId } = req.user;
