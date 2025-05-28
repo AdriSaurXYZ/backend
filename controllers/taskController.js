@@ -17,7 +17,7 @@ exports.createTask = (req, res) => {
     // Procesar URL de imagen si hay archivo
     let imageUrl = null;
     if (imageFile) {
-        imageUrl = `/uploads/${imageFile.filename}`;
+        imageUrl = imageFile.path; // ¡Cloudinary pone la URL aquí!
     }
 
     // Verificar si la categoría ya existe
