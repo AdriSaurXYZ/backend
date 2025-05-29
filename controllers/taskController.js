@@ -55,7 +55,9 @@ exports.createTask = (req, res) => {
 
             function insertTask() {
                 const formattedStartDate = formatLocalDateTime(start_date);
-                const formattedDueDate = due_date ? formatLocalDateTime(due_date) : null;
+                // Elimina tu formateador personalizado
+                const formattedDueDate = due_date ? new Date(due_date).toISOString().slice(0, 19).replace('T', ' ') : null;
+
 
                 console.log('⏰ start_date:', start_date, '➡️', formattedStartDate);
                 console.log('⏰ due_date:', due_date, '➡️', formattedDueDate);
