@@ -12,6 +12,7 @@ const userRoutes = require('./routes/routes');
 const taskRoutes = require('./routes/taskRoutes');
 const userCharactersRoutes = require('./routes/userCharactersRoutes');
 const charactersRoutes = require('./routes/characterRoutes');
+const statsRoutes = require('./routes/stats'); // Ajusta ruta según estructura
 
 
 const app = express();
@@ -33,6 +34,7 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/user-characters', userCharactersRoutes);
 app.use('/api/characters', charactersRoutes);
 app.use('/uploads', express.static('uploads'));
+app.use('/api', statsRoutes); // Tu endpoint final será /api/stats/...
 
 // Usa el puerto definido por Railway o 3000 por defecto
 const PORT = process.env.PORT || 3000;
