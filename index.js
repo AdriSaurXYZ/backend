@@ -20,6 +20,11 @@ const statsRoutes = require('./routes/stats'); // Ajusta ruta según estructura
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors({
+    origin: 'https://dailymana-9a816.web.app', // o usa una variable de entorno para producción
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 app.use(express.json());
 app.use(statsRoutes);
 app.use(cors({
