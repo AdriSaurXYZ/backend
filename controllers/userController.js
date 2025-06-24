@@ -68,7 +68,8 @@ exports.loginUser = async (req, res) => {
             }
 
             const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: '1h' });
-            res.json({ token });
+            res.json({ token, userId: user.id });
+
         });
     } catch (error) {
         console.error('Error al procesar la solicitud:', error);
