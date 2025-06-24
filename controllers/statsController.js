@@ -1,30 +1,32 @@
-// controllers/statsController.js
-const db = require('../db'); // Tu conexión a la base de datos
+const db = require('../db');
 
-exports.log500PointsDay = async (req, res) => {
-    const { userId } = req.body;
-    if (!userId) return res.status(400).json({ error: 'Falta userId' });
+exports.log500PointsDay = (req, res) => {
+    const { usuario_id } = req.body;
 
-    const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
+    if (!usuario_id) {
+        return res.status(400).json({ message: 'Falta el usuario_id' });
+    }
 
-    try {
-        const [exists] = await db.query(
-            'SELECT 1 FROM tareas_500_log WHERE usuario_id = ? AND fecha = ? LIMIT 1',
-            [userId, today]
-        );
+    const fechaHoy = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
-        if (exists) {
-            return res.status(200).json({ message: 'Ya registrado hoy' });
+    const insertQuery = `
+        INSERT INTO tareas_500_log (usuario_id, fecha)
+        SELECT ?, ?
+        WHERE NOT EXISTS (
+            SELECT 1 FROM tareas_500_log WHERE usuario_id = ? AND fecha = ?
+        )
+    `;
+
+    db.query(insertQuery, [usuario_id, fechaHoy, usuario_id, fechaHoy], (err, result) => {
+        if (err) {
+            console.error('❌ Error al insertar log de 500 puntos:', err);
+            return res.status(500).json({ message: 'Error en la base de datos', error: err.message });
         }
 
-        await db.query(
-            'INSERT INTO tareas_500_log (usuario_id, fecha) VALUES (?, ?)',
-            [userId, today]
-        );
+        if (result.affectedRows === 0) {
+            return res.status(200).json({ message: 'Ya se había registrado el día de hoy' });
+        }
 
-        res.status(201).json({ message: 'Registro guardado correctamente' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error al registrar 500 puntos' });
-    }
+        res.status(201).json({ message: '✅ Día de 500 puntos registrado con éxito' });
+    });
 };
