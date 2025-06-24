@@ -4,8 +4,10 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 
+
 // Conecta base de datos
 require('./db'); // <-- Asegura que se conecte cuando arranca
+
 
 // Rutas
 const userRoutes = require('./routes/routes');
@@ -18,6 +20,8 @@ const statsRoutes = require('./routes/stats'); // Ajusta ruta según estructura
 const app = express();
 
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(statsRoutes);
 app.use(cors({
     origin: '*', // O pon el dominio exacto del frontend si quieres restringirlo
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // AÑADIDO PATCH Y OPTIONS

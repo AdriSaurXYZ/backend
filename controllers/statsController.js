@@ -1,5 +1,6 @@
-const db = require('../db');
+const db = require('../db'); // Conexión a la base de datos (mysql2 o similar)
 
+// 🟢 Registra un día en que el usuario alcanza 500 puntos (sin duplicados)
 exports.log500PointsDay = (req, res) => {
     const { usuario_id } = req.body;
 
@@ -28,5 +29,37 @@ exports.log500PointsDay = (req, res) => {
         }
 
         res.status(201).json({ message: '✅ Día de 500 puntos registrado con éxito' });
+    });
+};
+
+// 🟢 Devuelve la lista de días en que el usuario alcanzó 500 puntos
+exports.get500PointDays = (req, res) => {
+    const userId = req.params.id;
+
+    const query = 'SELECT fecha FROM tareas_500_log WHERE usuario_id = ? ORDER BY fecha DESC';
+
+    db.query(query, [userId], (err, results) => {
+        if (err) {
+            console.error('❌ Error al obtener los días con 500 puntos:', err);
+            return res.status(500).json({ error: 'Error en la base de datos', message: err.message });
+        }
+
+        res.json(results);
+    });
+};
+
+// 🟢 Devuelve el número total de días en que el usuario alcanzó 500 puntos
+exports.get500PointDaysCount = (req, res) => {
+    const userId = req.params.id;
+
+    const query = 'SELECT COUNT(*) AS count FROM tareas_500_log WHERE usuario_id = ?';
+
+    db.query(query, [userId], (err, results) => {
+        if (err) {
+            console.error('❌ Error al contar los días con 500 puntos:', err);
+            return res.status(500).json({ error: 'Error en la base de datos', message: err.message });
+        }
+
+        res.json({ count: results[0].count });
     });
 };
