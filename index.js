@@ -35,6 +35,8 @@ app.use('/api/user-characters', userCharactersRoutes);
 app.use('/api/characters', charactersRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api', statsRoutes); // Tu endpoint final será /api/stats/...
+app.use('/api/stats', statsRoutes);
+
 
 // Usa el puerto definido por Railway o 3000 por defecto
 const PORT = process.env.PORT || 3000;

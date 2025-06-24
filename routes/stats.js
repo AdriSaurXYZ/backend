@@ -3,32 +3,33 @@ const router = express.Router();
 const db = require('../db'); // Ajusta si tu conexión está en otra ruta
 
 // GET: Obtener fechas en las que el usuario alcanzó 500 puntos
-router.get('/stats/500-points-days/:userId', async (req, res) => {
+// GET: Contar cuántas veces el usuario llegó a 500 puntos
+router.get('/stats/500-points-count/:userId', async (req, res) => {
     const userId = req.params.userId;
 
     try {
         const [rows] = await db.query(`
-            SELECT fecha
-            FROM tareas_500_log
-            WHERE usuario_id = ?
-            ORDER BY fecha DESC
-        `, [userId]);
+      SELECT COUNT(*) AS total
+      FROM tareas_500_log
+      WHERE usuario_id = ?
+    `, [userId]);
 
-        res.json(rows);
+        res.json(rows[0]);  // { total: X }
     } catch (error) {
-        console.error('Error al obtener estadísticas:', error);
-        res.status(500).json({ error: 'Error al obtener estadísticas' });
+        console.error('Error al obtener el contador de 500 puntos:', error);
+        res.status(500).json({ error: 'Error al obtener el contador' });
     }
 });
 
+
 // POST: Registrar que el usuario ha llegado a 500 puntos hoy
-router.post('/stats/500-points-log', async (req, res) => {
+router.post('/500-points-log', async (req, res) => {
     const { userId } = req.body;
     const today = new Date().toISOString().split('T')[0];
 
     try {
         const [existing] = await db.query(`
-            SELECT id FROM tareas_500_log 
+            SELECT id FROM tareas_500_log
             WHERE usuario_id = ? AND fecha = ?
         `, [userId, today]);
 
