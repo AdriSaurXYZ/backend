@@ -3,6 +3,7 @@ const { registerUser, loginUser } = require('../controllers/userController');
 const db = require('../db');  // Asegúrate de importar la conexión a la base de datos
 const router = express.Router();
 
+
 // Ruta para registrar un usuario
 router.post('/register', registerUser);
 
@@ -63,6 +64,9 @@ router.patch('/profile-photo', (req, res) => {
         res.json({ message: 'Foto de perfil actualizada' });
     });
 });
+
+const taskRoutes = require('./taskRoutes');
+router.use('/tasks', taskRoutes);
 
 
 module.exports = router;
