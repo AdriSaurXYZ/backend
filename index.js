@@ -22,7 +22,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({
     origin: 'https://dailymana-9a816.web.app', // o usa una variable de entorno para producción
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true
 }));
 app.use(express.json());
