@@ -9,7 +9,6 @@ const { upload } = require('../config/cloudinary'); // usa el upload de Cloudina
 //const upload = multer({ dest: 'uploads/' });
 
 // Rutas con autenticación
-router.post('/', authenticate, upload.single('image'), taskController.createTask);
 router.get('/', authenticate, taskController.getTasks);
 router.put('/:id/status', authenticate, taskController.updateTaskStatus);
 router.put('/:id', authenticate, taskController.updateTask);
