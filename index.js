@@ -27,11 +27,6 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(statsRoutes);
-app.use(cors({
-    origin: '*', // O pon el dominio exacto del frontend si quieres restringirlo
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // AÑADIDO PATCH Y OPTIONS
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
 
 
 app.get('/', (req, res) => {
