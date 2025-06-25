@@ -37,7 +37,7 @@ router.get('/profile', (req, res) => {
     });
 });
 
-router.patch('/profile-update'/*authMiddleware*/, updateProfile);
+router.patch('/profile-update',authMiddleware, updateProfile);
 
 
 
