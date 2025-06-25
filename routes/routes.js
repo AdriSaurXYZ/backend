@@ -1,5 +1,6 @@
 const express = require('express');
-const { registerUser, loginUser } = require('../controllers/userController');
+const { registerUser, loginUser, updateProfile } = require('../controllers/userController');
+const authMiddleware = require('../middleware/authMiddleware');
 const db = require('../db');  // Asegúrate de importar la conexión a la base de datos
 const router = express.Router();
 
@@ -35,6 +36,9 @@ router.get('/profile', (req, res) => {
         res.json(results[0]);
     });
 });
+
+router.patch('/users/profile-update', authMiddleware, updateProfile);
+
 
 
 // PATCH: actualizar foto de perfil del usuario
