@@ -78,8 +78,6 @@ exports.loginUser = async (req, res) => {
 
 };
 
-const User = require('../models/User'); // o donde tengas tu modelo
-
 exports.updateProfile = async (req, res) => {
     const userId = req.user.userId;  // ⚠️ el campo viene de tu JWT y authMiddleware
     const { name, email, password } = req.body;
