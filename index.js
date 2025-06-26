@@ -15,6 +15,10 @@ const taskRoutes = require('./routes/taskRoutes');
 const userCharactersRoutes = require('./routes/userCharactersRoutes');
 const charactersRoutes = require('./routes/characterRoutes');
 const statsRoutes = require('./routes/stats'); // Ajusta ruta según estructura
+const wuwaRoutes = require('./wuwaRoutes');
+const {use} = require("./routes/stats");
+
+
 
 
 const app = express();
@@ -40,6 +44,7 @@ app.use('/api/characters', charactersRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api', statsRoutes); // Tu endpoint final será /api/stats/...
 app.use('/api/stats', statsRoutes);
+app.use('/wuwa-characters', wuwaRoutes);
 
 
 // Usa el puerto definido por Railway o 3000 por defecto
