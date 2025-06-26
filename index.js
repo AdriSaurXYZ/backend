@@ -15,7 +15,7 @@ const taskRoutes = require('./routes/taskRoutes');
 const userCharactersRoutes = require('./routes/userCharactersRoutes');
 const charactersRoutes = require('./routes/characterRoutes');
 const statsRoutes = require('./routes/stats'); // Ajusta ruta según estructura
-const wuwaRoutes = require('./wuwaRoutes');
+const wuwaRoutes = require('./routes/wuwaRoutes');
 const {use} = require("./routes/stats");
 
 
