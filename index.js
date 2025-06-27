@@ -44,7 +44,7 @@ app.use('/api/user-characters', userCharactersRoutes);
 app.use('/api/characters', charactersRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/stats', statsRoutes);
-app.use('/api/wuwa-tasks', wuwaTaskRoutes);
+app.use('/api/wuwa_tasks', wuwaTaskRoutes);
 app.use('/wuwa-characters', wuwaRoutes);
 
 
