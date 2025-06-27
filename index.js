@@ -43,7 +43,6 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/user-characters', userCharactersRoutes);
 app.use('/api/characters', charactersRoutes);
 app.use('/uploads', express.static('uploads'));
-app.use('/api', statsRoutes); // Tu endpoint final será /api/stats/...
 app.use('/api/stats', statsRoutes);
 app.use('/api/wuwa-tasks', wuwaTaskRoutes);
 app.use('/wuwa-characters', wuwaRoutes);
