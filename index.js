@@ -17,6 +17,7 @@ const charactersRoutes = require('./routes/characterRoutes');
 const statsRoutes = require('./routes/stats'); // Ajusta ruta según estructura
 const wuwaRoutes = require('./routes/wuwaRoutes');
 const {use} = require("./routes/stats");
+const wuwaTaskRoutes = require('./routes/wuwaTasksRoutes');
 
 
 
@@ -44,6 +45,7 @@ app.use('/api/characters', charactersRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api', statsRoutes); // Tu endpoint final será /api/stats/...
 app.use('/api/stats', statsRoutes);
+app.use('/api/wuwa-tasks', wuwaTaskRoutes);
 app.use('/wuwa-characters', wuwaRoutes);
 
 
