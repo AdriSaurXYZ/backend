@@ -17,10 +17,14 @@ router.post('/login', loginUser);
 // Obtener perfil
 router.get('/profile', (req, res) => {
     const email = req.query.email;
-    const game = req.query.game;
+    let game = req.query.game || 'hsr'; // Por defecto a 'hsr'
 
-    if (!email || !game) {
-        return res.status(400).json({ error: 'Email y game son requeridos' });
+    if (!email) {
+        return res.status(400).json({ error: 'Email es requerido' });
+    }
+
+    if (game !== 'hsr' && game !== 'wuwa') {
+        return res.status(400).json({ error: 'Juego no válido (debe ser hsr o wuwa)' });
     }
 
     const userQuery = `
