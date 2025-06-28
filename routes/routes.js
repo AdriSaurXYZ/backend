@@ -19,13 +19,17 @@ router.get('/profile', (req, res) => {
         return res.status(400).json({ error: 'Email es requerido' });
     }
 
-    // Primero obtenemos el juego del personaje guardado
     const userQuery = `SELECT name, email, profile_character_id, profile_character_game FROM users WHERE email = ?`;
     db.query(userQuery, [email], (err, userResults) => {
         if (err) return res.status(500).json({ error: 'Error en base de datos' });
         if (userResults.length === 0) return res.status(404).json({ error: 'Usuario no encontrado' });
 
         const user = userResults[0];
+
+        if (!user.profile_character_id || !user.profile_character_game) {
+            return res.json({ name: user.name, email: user.email, profile_image_url: null });
+        }
+
         const characterTable = user.profile_character_game === 'wuwa' ? 'characters_wuwa' : 'characters_hsr';
 
         const characterQuery = `SELECT profile_image_url FROM ${characterTable} WHERE id = ?`;
@@ -33,10 +37,18 @@ router.get('/profile', (req, res) => {
             if (err) return res.status(500).json({ error: 'Error al buscar personaje' });
 
             const profile_image_url = characterResults[0]?.profile_image_url || null;
-            res.json({ name: user.name, email: user.email, profile_image_url });
+
+            res.json({
+                name: user.name,
+                email: user.email,
+                profile_image_url,
+                character_id: user.profile_character_id,
+                game: user.profile_character_game
+            });
         });
     });
 });
+
 
 router.patch('/profile-update',authMiddleware, updateProfile);
 
