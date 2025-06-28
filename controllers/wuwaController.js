@@ -6,7 +6,7 @@ exports.getAllWuWaCharacters = (req, res) => {
             c.*, 
             GROUP_CONCAT(r.name) AS roles
         FROM characters_wuwa c
-        LEFT JOIN character_roles cr ON c.id = cr.character_id
+        LEFT JOIN character_roles_wuwa cr ON c.id = cr.character_id
         LEFT JOIN roles r ON cr.role_id = r.id
         GROUP BY c.id
     `;
